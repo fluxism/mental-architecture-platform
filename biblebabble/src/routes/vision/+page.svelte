@@ -5,14 +5,14 @@
 	let generating = $state(false);
 	let generatedTitle = $state('');
 	let generatedContent = $state('');
-	let editingStoryId = $state<string | null>(null);
+	let editingId = $state<string | null>(null);
 	let editTitle = $state('');
 	let editContent = $state('');
 
-	async function generateStory() {
+	async function generateVision() {
 		generating = true;
 		try {
-			const res = await fetch('/api/ai/generate-story', {
+			const res = await fetch('/api/ai/generate-vision', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({})
@@ -27,31 +27,30 @@
 		generating = false;
 	}
 
-	function startEdit(story: any) {
-		editingStoryId = story.id;
-		editTitle = story.title || '';
-		editContent = story.content;
+	function startEdit(vision: any) {
+		editingId = vision.id;
+		editTitle = vision.title || '';
+		editContent = vision.content;
 	}
 </script>
 
 <svelte:head>
-	<title>Sacred Parables - BibleBabble</title>
+	<title>New Life Vision - BibleBabble</title>
 </svelte:head>
 
 <div class="mx-auto max-w-3xl px-4 py-8">
-	<a href="/beliefs/{data.belief.id}" class="mb-6 inline-flex items-center gap-1 text-sm text-text-muted transition-colors hover:text-text-primary">
-		&larr; Back to Belief
-	</a>
-
-	<h1 class="font-serif text-3xl text-text-primary">Your Sacred Parables</h1>
+	<h1 class="font-serif text-3xl text-text-primary">Your New Life Vision</h1>
 	<p class="mt-2 text-text-secondary">
-		Stories that speak to your transformation — woven from all your wounds, all your truths.
+		A first-person vision of who you are becoming — your blueprint, your north star.
+	</p>
+	<p class="mt-1 text-sm text-text-muted">
+		Written from your wounds, your truths, and your transformation. This is faith made visible.
 	</p>
 
-	<!-- Consolidated beliefs overview -->
+	<!-- Beliefs that inform the vision -->
 	{#if data.allBeliefs.length > 0}
 		<div class="mt-6 rounded-xl border border-border-subtle bg-surface-raised p-5">
-			<p class="mb-3 text-xs font-medium uppercase tracking-wider text-text-muted">All beliefs woven into your story</p>
+			<p class="mb-3 text-xs font-medium uppercase tracking-wider text-text-muted">Your inner landscape</p>
 			<div class="space-y-1">
 				{#each data.allBeliefs as b}
 					<div class="flex items-center gap-2 text-sm">
@@ -60,24 +59,29 @@
 							{b.status === 'shifting' ? 'bg-text-muted' : ''}
 							{b.status === 'integrated' ? 'bg-text-secondary' : ''}
 						"></span>
-						<span class="text-text-secondary">"{b.statement}"</span>
+						<span class="text-text-secondary">
+							"{b.statement}"
+							{#if b.functionalBelief}
+								<span class="text-text-muted">&rarr; "{b.functionalBelief}"</span>
+							{/if}
+						</span>
 					</div>
 				{/each}
 			</div>
 		</div>
 	{/if}
 
-	<!-- Existing stories -->
-	{#if data.stories.length > 0}
+	<!-- Existing visions -->
+	{#if data.visions.length > 0}
 		<div class="mt-8 space-y-6">
-			{#each data.stories as story}
-				{#if editingStoryId === story.id}
-					<form method="POST" action="?/updateStory" use:enhance={() => { return async ({ update }) => { editingStoryId = null; await update(); }; }} class="rounded-xl border border-border-subtle bg-surface-raised p-6">
-						<input type="hidden" name="storyId" value={story.id} />
+			{#each data.visions as vision}
+				{#if editingId === vision.id}
+					<form method="POST" action="?/update" use:enhance={() => { return async ({ update }) => { editingId = null; await update(); }; }} class="rounded-xl border border-border-subtle bg-surface-raised p-6">
+						<input type="hidden" name="visionId" value={vision.id} />
 						<input
 							name="title"
 							bind:value={editTitle}
-							placeholder="Story title..."
+							placeholder="Vision title..."
 							class="mb-3 w-full rounded-lg border border-border-subtle bg-surface p-3 font-serif text-xl text-text-primary focus:border-accent focus:outline-none"
 						/>
 						<textarea
@@ -88,25 +92,25 @@
 						></textarea>
 						<div class="mt-3 flex gap-2">
 							<button type="submit" class="rounded-lg bg-accent px-4 py-2 text-sm text-surface">Save</button>
-							<button type="button" onclick={() => editingStoryId = null} class="text-sm text-text-secondary">Cancel</button>
+							<button type="button" onclick={() => editingId = null} class="text-sm text-text-secondary">Cancel</button>
 						</div>
 					</form>
 				{:else}
 					<div class="rounded-xl border border-border-subtle bg-surface-raised p-8">
-						{#if story.title}
-							<h2 class="mb-4 font-serif text-2xl text-text-primary">{story.title}</h2>
+						{#if vision.title}
+							<h2 class="mb-4 font-serif text-2xl text-text-primary">{vision.title}</h2>
 						{/if}
 						<div class="font-serif leading-loose text-text-secondary whitespace-pre-wrap">
-							{story.content}
+							{vision.content}
 						</div>
 						<div class="mt-6 flex items-center justify-between border-t border-border-subtle pt-4">
 							<time class="text-xs text-text-muted">
-								{new Date(story.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+								{new Date(vision.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
 							</time>
 							<div class="flex gap-3">
-								<button onclick={() => startEdit(story)} class="text-xs text-text-muted transition-colors hover:text-text-primary">Edit</button>
-								<form method="POST" action="?/deleteStory" use:enhance>
-									<input type="hidden" name="storyId" value={story.id} />
+								<button onclick={() => startEdit(vision)} class="text-xs text-text-muted transition-colors hover:text-text-primary">Edit</button>
+								<form method="POST" action="?/delete" use:enhance>
+									<input type="hidden" name="visionId" value={vision.id} />
 									<button type="submit" class="text-xs text-text-muted transition-colors hover:text-danger">Delete</button>
 								</form>
 							</div>
@@ -117,39 +121,49 @@
 		</div>
 	{/if}
 
-	<!-- Generate new story -->
+	<!-- Generate new vision -->
 	<div class="mt-8">
 		<h2 class="mb-2 font-serif text-xl text-text-primary">
-			{data.stories.length > 0 ? 'Generate Another Parable' : 'Create Your Parable'}
+			{data.visions.length > 0 ? 'Generate a New Vision' : 'Create Your Vision'}
 		</h2>
 		<p class="mb-4 text-sm text-text-muted">
-			The AI will use ALL your beliefs, journal entries, and origin data to craft a deeply personal parable — inspired by the great storytelling traditions of scripture.
+			The AI will use everything you've shared — every belief, every wound, every step of growth — to write a first-person vision of your transformed life.
 		</p>
 
+		{#if data.allBeliefs.length === 0}
+			<div class="mb-4 rounded-xl border border-border-subtle bg-surface-overlay p-5">
+				<p class="text-sm text-text-secondary">
+					Your vision will be richer once you've identified beliefs and explored their origins.
+					<a href="/journal/new" class="text-accent hover:text-accent-hover">Start journaling</a> or
+					<a href="/beliefs/new" class="text-accent hover:text-accent-hover">add a belief</a> first.
+				</p>
+			</div>
+		{/if}
+
 		<button
-			onclick={generateStory}
+			onclick={generateVision}
 			disabled={generating}
 			class="rounded-lg bg-accent px-6 py-3 text-sm font-medium text-surface transition-colors hover:bg-accent-hover disabled:opacity-50"
 		>
-			{generating ? 'Weaving your parable...' : 'Generate Sacred Parable'}
+			{generating ? 'Envisioning your new life...' : 'Generate New Life Vision'}
 		</button>
 
 		{#if generatedContent}
 			<div class="mt-6 rounded-xl border border-border-subtle bg-surface-raised p-8">
-				<p class="mb-2 text-xs font-medium text-text-muted uppercase tracking-wider">Generated Parable</p>
+				<p class="mb-2 text-xs font-medium text-text-muted uppercase tracking-wider">Your New Life</p>
 				{#if generatedTitle}
 					<h3 class="mb-4 font-serif text-2xl text-text-primary">{generatedTitle}</h3>
 				{/if}
 				<p class="font-serif leading-loose text-text-secondary whitespace-pre-wrap">{generatedContent}</p>
 
-				<form method="POST" action="?/saveStory" use:enhance={() => { return async ({ update }) => { generatedTitle = ''; generatedContent = ''; await update(); }; }}>
+				<form method="POST" action="?/save" use:enhance={() => { return async ({ update }) => { generatedTitle = ''; generatedContent = ''; await update(); }; }}>
 					<input type="hidden" name="title" value={generatedTitle} />
 					<input type="hidden" name="content" value={generatedContent} />
 					<div class="mt-6 flex gap-3">
 						<button type="submit" class="rounded-lg bg-accent px-4 py-2 text-sm text-surface transition-colors hover:bg-accent-hover">
-							Save This Parable
+							Save This Vision
 						</button>
-						<button type="button" onclick={generateStory} class="rounded-lg border border-border-medium px-4 py-2 text-sm text-text-secondary transition-colors hover:text-text-primary">
+						<button type="button" onclick={generateVision} class="rounded-lg border border-border-medium px-4 py-2 text-sm text-text-secondary transition-colors hover:text-text-primary">
 							Generate Another
 						</button>
 					</div>

@@ -16,19 +16,20 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 
 	if (!belief) throw error(404, 'Belief not found');
 
-	const origins = await db
-		.select()
-		.from(beliefOrigins)
-		.where(eq(beliefOrigins.beliefId, params.id))
-		.orderBy(beliefOrigins.createdAt);
-
-	const beliefStories = await db
+	// Get ALL user's stories (holistic view)
+	const allStories = await db
 		.select()
 		.from(stories)
-		.where(eq(stories.beliefId, params.id))
+		.where(eq(stories.userId, locals.user.id))
 		.orderBy(desc(stories.createdAt));
 
-	return { belief, origins, stories: beliefStories };
+	// Get ALL user's beliefs for the consolidated view
+	const allBeliefs = await db
+		.select()
+		.from(beliefs)
+		.where(eq(beliefs.userId, locals.user.id));
+
+	return { belief, stories: allStories, allBeliefs };
 };
 
 export const actions: Actions = {

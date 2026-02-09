@@ -10,6 +10,7 @@ import {
 import { eq, and, desc } from 'drizzle-orm';
 import { nanoid } from 'nanoid';
 import { generateJournalInsights } from '$lib/server/ai.js';
+import { buildUserProfile } from '$lib/server/profile.js';
 
 export const load: PageServerLoad = async ({ locals, params }) => {
 	if (!locals.user) throw redirect(302, '/auth/login');
@@ -81,7 +82,8 @@ export const actions: Actions = {
 
 		if (!entry) throw error(404, 'Entry not found');
 
-		const insights = await generateJournalInsights(entry.content);
+		const profile = await buildUserProfile(locals.user.id);
+		const insights = await generateJournalInsights(entry.content, profile);
 
 		await db
 			.update(journalEntries)

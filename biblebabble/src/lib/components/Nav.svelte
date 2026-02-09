@@ -33,6 +33,12 @@
 					Beliefs
 				</a>
 				<a
+					href="/vision"
+					class="rounded-md px-3 py-1.5 text-sm text-text-secondary transition-colors hover:bg-surface-overlay hover:text-text-primary"
+				>
+					Vision
+				</a>
+				<a
 					href="/timeline"
 					class="rounded-md px-3 py-1.5 text-sm text-text-secondary transition-colors hover:bg-surface-overlay hover:text-text-primary"
 				>

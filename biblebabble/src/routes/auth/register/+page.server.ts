@@ -12,6 +12,7 @@ export const actions: Actions = {
 		const email = formData.get('email')?.toString().trim() ?? '';
 		const password = formData.get('password')?.toString() ?? '';
 		const name = formData.get('name')?.toString().trim() || null;
+		const gender = formData.get('gender')?.toString() as 'male' | 'female' | null;
 
 		// Validate email
 		if (!email) {
@@ -52,6 +53,7 @@ export const actions: Actions = {
 			email,
 			passwordHash,
 			name,
+			gender,
 			createdAt: now,
 			updatedAt: now
 		});

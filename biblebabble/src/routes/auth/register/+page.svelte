@@ -39,6 +39,20 @@
 			</div>
 
 			<div>
+				<span class="block text-sm font-medium text-text-secondary">I am</span>
+				<div class="mt-1.5 flex gap-3">
+					<label class="flex flex-1 cursor-pointer items-center justify-center rounded-lg border border-border-subtle bg-surface-raised px-4 py-2.5 text-text-secondary transition-colors has-[:checked]:border-accent has-[:checked]:text-text-primary">
+						<input type="radio" name="gender" value="male" class="sr-only" required />
+						<span>Male</span>
+					</label>
+					<label class="flex flex-1 cursor-pointer items-center justify-center rounded-lg border border-border-subtle bg-surface-raised px-4 py-2.5 text-text-secondary transition-colors has-[:checked]:border-accent has-[:checked]:text-text-primary">
+						<input type="radio" name="gender" value="female" class="sr-only" />
+						<span>Female</span>
+					</label>
+				</div>
+			</div>
+
+			<div>
 				<label for="email" class="block text-sm font-medium text-text-secondary">
 					Email
 				</label>
