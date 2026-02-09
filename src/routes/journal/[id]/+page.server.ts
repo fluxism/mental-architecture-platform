@@ -14,11 +14,11 @@ import { generateJournalInsights } from '$lib/server/ai.js';
 export const load: PageServerLoad = async ({ locals, params }) => {
 	if (!locals.user) throw redirect(302, '/auth/login');
 
-	const entry = await db
+	const [entry] = await db
 		.select()
 		.from(journalEntries)
 		.where(and(eq(journalEntries.id, params.id), eq(journalEntries.userId, locals.user.id)))
-		.get();
+		.limit(1);
 
 	if (!entry) throw error(404, 'Entry not found');
 
@@ -73,11 +73,11 @@ export const actions: Actions = {
 	generateInsights: async ({ locals, params }) => {
 		if (!locals.user) throw redirect(302, '/auth/login');
 
-		const entry = await db
+		const [entry] = await db
 			.select()
 			.from(journalEntries)
 			.where(and(eq(journalEntries.id, params.id), eq(journalEntries.userId, locals.user.id)))
-			.get();
+			.limit(1);
 
 		if (!entry) throw error(404, 'Entry not found');
 

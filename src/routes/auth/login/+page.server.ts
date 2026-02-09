@@ -17,11 +17,11 @@ export const actions: Actions = {
 		}
 
 		// Look up user by email
-		const user = await db
+		const [user] = await db
 			.select()
 			.from(users)
 			.where(eq(users.email, email))
-			.get();
+			.limit(1);
 
 		if (!user) {
 			return fail(400, { email, error: 'Invalid credentials.' });

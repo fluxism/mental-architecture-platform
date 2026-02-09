@@ -1,23 +1,23 @@
-import { sqliteTable, text, integer, primaryKey } from 'drizzle-orm/sqlite-core';
+import { pgTable, text, boolean, timestamp, primaryKey } from 'drizzle-orm/pg-core';
 
-export const users = sqliteTable('users', {
+export const users = pgTable('users', {
 	id: text('id').primaryKey(),
 	email: text('email').notNull().unique(),
 	passwordHash: text('password_hash').notNull(),
 	name: text('name'),
-	createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
-	updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull()
+	createdAt: timestamp('created_at').notNull(),
+	updatedAt: timestamp('updated_at').notNull()
 });
 
-export const sessions = sqliteTable('sessions', {
+export const sessions = pgTable('sessions', {
 	id: text('id').primaryKey(),
 	userId: text('user_id')
 		.notNull()
 		.references(() => users.id, { onDelete: 'cascade' }),
-	expiresAt: integer('expires_at', { mode: 'timestamp' }).notNull()
+	expiresAt: timestamp('expires_at').notNull()
 });
 
-export const journalEntries = sqliteTable('journal_entries', {
+export const journalEntries = pgTable('journal_entries', {
 	id: text('id').primaryKey(),
 	userId: text('user_id')
 		.notNull()
@@ -25,11 +25,11 @@ export const journalEntries = sqliteTable('journal_entries', {
 	content: text('content').notNull(),
 	prompt: text('prompt'),
 	aiInsights: text('ai_insights'),
-	createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
-	updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull()
+	createdAt: timestamp('created_at').notNull(),
+	updatedAt: timestamp('updated_at').notNull()
 });
 
-export const beliefs = sqliteTable('beliefs', {
+export const beliefs = pgTable('beliefs', {
 	id: text('id').primaryKey(),
 	userId: text('user_id')
 		.notNull()
@@ -39,21 +39,21 @@ export const beliefs = sqliteTable('beliefs', {
 		.notNull()
 		.default('active'),
 	functionalBelief: text('functional_belief'),
-	createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
-	updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull()
+	createdAt: timestamp('created_at').notNull(),
+	updatedAt: timestamp('updated_at').notNull()
 });
 
-export const beliefOrigins = sqliteTable('belief_origins', {
+export const beliefOrigins = pgTable('belief_origins', {
 	id: text('id').primaryKey(),
 	beliefId: text('belief_id')
 		.notNull()
 		.references(() => beliefs.id, { onDelete: 'cascade' }),
 	question: text('question').notNull(),
 	response: text('response').notNull(),
-	createdAt: integer('created_at', { mode: 'timestamp' }).notNull()
+	createdAt: timestamp('created_at').notNull()
 });
 
-export const affirmations = sqliteTable('affirmations', {
+export const affirmations = pgTable('affirmations', {
 	id: text('id').primaryKey(),
 	beliefId: text('belief_id')
 		.notNull()
@@ -62,12 +62,12 @@ export const affirmations = sqliteTable('affirmations', {
 		.notNull()
 		.references(() => users.id, { onDelete: 'cascade' }),
 	content: text('content').notNull(),
-	isAiGenerated: integer('is_ai_generated', { mode: 'boolean' }).notNull().default(false),
-	createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
-	updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull()
+	isAiGenerated: boolean('is_ai_generated').notNull().default(false),
+	createdAt: timestamp('created_at').notNull(),
+	updatedAt: timestamp('updated_at').notNull()
 });
 
-export const stories = sqliteTable('stories', {
+export const stories = pgTable('stories', {
 	id: text('id').primaryKey(),
 	beliefId: text('belief_id')
 		.notNull()
@@ -77,11 +77,11 @@ export const stories = sqliteTable('stories', {
 		.references(() => users.id, { onDelete: 'cascade' }),
 	title: text('title'),
 	content: text('content').notNull(),
-	createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
-	updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull()
+	createdAt: timestamp('created_at').notNull(),
+	updatedAt: timestamp('updated_at').notNull()
 });
 
-export const reflections = sqliteTable('reflections', {
+export const reflections = pgTable('reflections', {
 	id: text('id').primaryKey(),
 	userId: text('user_id')
 		.notNull()
@@ -91,10 +91,10 @@ export const reflections = sqliteTable('reflections', {
 		onDelete: 'cascade'
 	}),
 	content: text('content').notNull(),
-	createdAt: integer('created_at', { mode: 'timestamp' }).notNull()
+	createdAt: timestamp('created_at').notNull()
 });
 
-export const journalEntryBeliefs = sqliteTable(
+export const journalEntryBeliefs = pgTable(
 	'journal_entry_beliefs',
 	{
 		journalEntryId: text('journal_entry_id')

@@ -13,11 +13,11 @@ import { eq, and, desc } from 'drizzle-orm';
 export const load: PageServerLoad = async ({ locals, params }) => {
 	if (!locals.user) throw redirect(302, '/auth/login');
 
-	const belief = await db
+	const [belief] = await db
 		.select()
 		.from(beliefs)
 		.where(and(eq(beliefs.id, params.id), eq(beliefs.userId, locals.user.id)))
-		.get();
+		.limit(1);
 
 	if (!belief) throw error(404, 'Belief not found');
 

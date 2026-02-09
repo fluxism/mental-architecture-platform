@@ -34,7 +34,7 @@ export async function validateSession(
 	token: string
 ): Promise<{ session: Session; user: SessionUser } | null> {
 	const id = hashSessionToken(token);
-	const result = await db
+	const [result] = await db
 		.select({
 			session: sessions,
 			user: { id: users.id, email: users.email, name: users.name }
@@ -42,7 +42,7 @@ export async function validateSession(
 		.from(sessions)
 		.innerJoin(users, eq(sessions.userId, users.id))
 		.where(eq(sessions.id, id))
-		.get();
+		.limit(1);
 
 	if (!result) return null;
 

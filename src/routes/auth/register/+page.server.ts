@@ -32,11 +32,11 @@ export const actions: Actions = {
 		}
 
 		// Check if email already exists
-		const existing = await db
+		const [existing] = await db
 			.select({ id: users.id })
 			.from(users)
 			.where(eq(users.email, email))
-			.get();
+			.limit(1);
 
 		if (existing) {
 			return fail(400, { email, name, error: 'An account with this email already exists.' });

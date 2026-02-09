@@ -1,9 +1,19 @@
-import { drizzle } from 'drizzle-orm/better-sqlite3';
-import Database from 'better-sqlite3';
+import { neon } from '@netlify/neon';
+import { drizzle, type NeonHttpDatabase } from 'drizzle-orm/neon-http';
 import * as schema from './schema.js';
 
-const sqlite = new Database('biblebabble.db');
-sqlite.pragma('journal_mode = WAL');
-sqlite.pragma('foreign_keys = ON');
+let _db: NeonHttpDatabase<typeof schema>;
 
-export const db = drizzle(sqlite, { schema });
+export function getDb() {
+	if (!_db) {
+		const sql = neon();
+		_db = drizzle(sql, { schema });
+	}
+	return _db;
+}
+
+export const db = new Proxy({} as NeonHttpDatabase<typeof schema>, {
+	get(_target, prop) {
+		return (getDb() as any)[prop];
+	}
+});
