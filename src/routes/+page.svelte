@@ -3,7 +3,7 @@
 </script>
 
 <svelte:head>
-	<title>BibleBabble - Map your beliefs. Rewrite your story.</title>
+	<title>MAP - Mental Architecture Platform</title>
 </svelte:head>
 
 <div class="flex min-h-[calc(100vh-53px)] flex-col items-center justify-center px-6">
@@ -15,7 +15,7 @@
 		</div>
 
 		<h1 class="mb-4 font-serif text-5xl tracking-tight text-text-primary sm:text-6xl">
-			BibleBabble
+			MAP
 		</h1>
 
 		<p class="mb-10 text-lg leading-relaxed text-warmth/90 font-serif italic">
@@ -32,7 +32,7 @@
 				We all carry stories about who we are -- inherited, absorbed, repeated until they feel like truth.
 			</p>
 			<p>
-				BibleBabble is a private space to surface those beliefs, trace their origins,
+				MAP is a private space to surface those beliefs, trace their origins,
 				and gently transform the ones that no longer serve you.
 			</p>
 			<p>

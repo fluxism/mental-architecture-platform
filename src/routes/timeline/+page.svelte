@@ -11,7 +11,7 @@
 </script>
 
 <svelte:head>
-	<title>Timeline - BibleBabble</title>
+	<title>Timeline - MAP</title>
 </svelte:head>
 
 <div class="mx-auto max-w-3xl px-4 py-8">

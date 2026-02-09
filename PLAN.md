@@ -1,4 +1,4 @@
-# BibleBabble - Belief Transformation App - Implementation Plan
+# MAP - Mental Architecture Platform - Implementation Plan
 
 ## Tech Stack
 - **Framework**: SvelteKit + Svelte 5 (runes)

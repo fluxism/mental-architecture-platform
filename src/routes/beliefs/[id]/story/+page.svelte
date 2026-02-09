@@ -39,7 +39,7 @@
 </script>
 
 <svelte:head>
-	<title>Mythic Story - BibleBabble</title>
+	<title>Mythic Story - MAP</title>
 </svelte:head>
 
 <div class="mx-auto max-w-3xl px-4 py-8">

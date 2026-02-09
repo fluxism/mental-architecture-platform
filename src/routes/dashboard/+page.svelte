@@ -17,7 +17,7 @@
 </script>
 
 <svelte:head>
-	<title>Dashboard - BibleBabble</title>
+	<title>Dashboard - MAP</title>
 </svelte:head>
 
 <div class="mx-auto max-w-4xl px-6 py-10">

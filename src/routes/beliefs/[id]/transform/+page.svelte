@@ -28,7 +28,7 @@
 </script>
 
 <svelte:head>
-	<title>Transform Belief - BibleBabble</title>
+	<title>Transform Belief - MAP</title>
 </svelte:head>
 
 <div class="mx-auto max-w-3xl px-4 py-8">

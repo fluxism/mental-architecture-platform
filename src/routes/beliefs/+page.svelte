@@ -8,7 +8,7 @@
 </script>
 
 <svelte:head>
-	<title>Beliefs - BibleBabble</title>
+	<title>Beliefs - MAP</title>
 </svelte:head>
 
 <div class="mx-auto max-w-3xl px-4 py-8">

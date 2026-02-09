@@ -8,7 +8,7 @@
 	<div class="mx-auto flex max-w-5xl items-center justify-between px-6 py-3">
 		<a href="/" class="group flex items-center gap-2">
 			<span class="text-lg font-serif tracking-wide text-text-primary transition-colors group-hover:text-accent">
-				BibleBabble
+				MAP
 			</span>
 		</a>
 

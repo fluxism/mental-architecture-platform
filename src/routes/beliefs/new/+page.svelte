@@ -6,7 +6,7 @@
 </script>
 
 <svelte:head>
-	<title>Add Belief - BibleBabble</title>
+	<title>Add Belief - MAP</title>
 </svelte:head>
 
 <div class="mx-auto max-w-2xl px-4 py-8">
