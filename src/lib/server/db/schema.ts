@@ -6,6 +6,7 @@ export const users = pgTable('users', {
 	passwordHash: text('password_hash').notNull(),
 	name: text('name'),
 	gender: text('gender', { enum: ['male', 'female'] }),
+	role: text('role', { enum: ['user', 'admin'] }).notNull().default('user'),
 	dateOfBirth: text('date_of_birth'),
 	placeOfBirth: text('place_of_birth'),
 	createdAt: timestamp('created_at').notNull(),

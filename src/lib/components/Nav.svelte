@@ -44,6 +44,14 @@
 				>
 					Timeline
 				</a>
+				{#if user.role === 'admin'}
+					<a
+						href="/admin"
+						class="rounded-md px-3 py-1.5 text-sm text-accent transition-colors hover:bg-surface-overlay hover:text-accent-hover"
+					>
+						Admin
+					</a>
+				{/if}
 
 				<div class="ml-3 flex items-center gap-3 border-l border-border-subtle pl-4">
 					<span class="text-xs text-text-muted">
