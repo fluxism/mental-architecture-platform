@@ -54,9 +54,9 @@
 				{/if}
 
 				<div class="ml-3 flex items-center gap-3 border-l border-border-subtle pl-4">
-					<span class="text-xs text-text-muted">
+					<a href="/profile" class="text-xs text-text-muted transition-colors hover:text-text-primary">
 						{user.name ?? user.email}
-					</span>
+					</a>
 					<form method="POST" action="/auth/logout">
 						<button
 							type="submit"
