@@ -106,6 +106,49 @@ Be thorough. Read between the lines. The deepest beliefs are the ones they don't
 	}
 }
 
+// ── Generate functional belief (the new belief to replace the old one) ──
+
+export async function generateFunctionalBelief(
+	profile: UserProfile,
+	targetBelief: string,
+	targetOrigins: { question: string; response: string }[]
+): Promise<string> {
+	const context = buildProfileContext(profile);
+
+	const response = await openai.chat.completions.create({
+		model: MODEL,
+		messages: [
+			{
+				role: 'system',
+				content: `You are a healer of the mind. Your task is to craft a new, functional belief to replace a limiting one.
+
+This is not about "positive thinking." The new belief must:
+- Feel true and reachable — not forced or aspirational
+- Directly counter the core wound of the old belief
+- Be something they could say to themselves and mean it
+- Be grounded in their actual journey and growth
+- Be 1-2 sentences, written in first person
+
+Think of it as the truth they forgot, not a wish they're making.`
+			},
+			{
+				role: 'user',
+				content: `FULL CONTEXT:
+${context}
+
+OLD BELIEF TO REPLACE: "${targetBelief}"
+
+${targetOrigins.length > 0 ? `Origins:\n${targetOrigins.map((o) => `Q: ${o.question}\nA: ${o.response}`).join('\n\n')}` : ''}
+
+Write a new functional belief. Just the belief itself, nothing else.`
+			}
+		],
+		temperature: 0.7
+	});
+
+	return response.choices[0].message.content || '';
+}
+
 // ── Generate personalized affirmation ──
 
 export async function generateAffirmation(

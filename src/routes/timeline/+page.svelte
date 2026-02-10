@@ -57,7 +57,7 @@
 							</div>
 
 							<time class="mt-2 block text-xs text-text-muted">
-								{new Date(event.date).toLocaleDateString('en-US', { weekday: 'short', month: 'long', day: 'numeric', year: 'numeric' })}
+								{new Date(event.date).toLocaleDateString('en-US', { weekday: 'short', month: 'long', day: 'numeric', year: 'numeric' })} at {new Date(event.date).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
 							</time>
 						</a>
 					{/each}

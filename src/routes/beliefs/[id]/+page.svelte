@@ -144,7 +144,7 @@
 					<div class="rounded-lg border-l-2 border-warmth/50 bg-surface-overlay p-4">
 						<p class="text-sm text-text-primary">{reflection.content}</p>
 						<time class="mt-2 block text-xs text-text-muted">
-							{new Date(reflection.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+							{new Date(reflection.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} at {new Date(reflection.createdAt).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
 						</time>
 					</div>
 				{/each}

@@ -2,7 +2,6 @@
 	import { enhance } from '$app/forms';
 
 	let { data, form } = $props();
-	let selectedPrompt = $state(data.prompt as string);
 	let content = $state('');
 </script>
 
@@ -13,39 +12,20 @@
 <div class="mx-auto max-w-3xl px-4 py-8">
 	<div class="mb-8">
 		<h1 class="font-serif text-3xl text-text-primary">Express Yourself</h1>
-		<p class="mt-1 text-text-secondary">No judgment, no forced positivity — just honest articulation.</p>
+		<p class="mt-1 text-text-secondary">No judgment, no forced positivity — just honest words.</p>
 	</div>
 
-	<!-- Prompt selector -->
-	<div class="mb-6">
-		<p class="mb-3 text-sm text-text-muted">Choose a prompt, or write freely:</p>
-		<div class="flex flex-wrap gap-2">
-			<button
-				type="button"
-				class="rounded-full px-3 py-1.5 text-sm transition-colors {selectedPrompt === '' ? 'bg-accent text-white' : 'bg-surface-overlay text-text-secondary hover:text-text-primary'}"
-				onclick={() => selectedPrompt = ''}
-			>
-				Free write
-			</button>
+	<!-- Prompts as inspiration -->
+	<div class="mb-6 rounded-xl border border-border-subtle bg-surface-raised p-5">
+		<p class="mb-3 text-sm text-text-muted">If you need a starting point, try one of these:</p>
+		<ul class="space-y-1.5 text-sm text-text-secondary">
 			{#each data.prompts as prompt}
-				<button
-					type="button"
-					class="rounded-full px-3 py-1.5 text-sm transition-colors {selectedPrompt === prompt ? 'bg-accent text-white' : 'bg-surface-overlay text-text-secondary hover:text-text-primary'}"
-					onclick={() => selectedPrompt = prompt}
-				>
-					{prompt}
-				</button>
+				<li>{prompt}</li>
 			{/each}
-		</div>
+		</ul>
 	</div>
-
-	{#if selectedPrompt}
-		<p class="mb-4 font-serif text-lg text-warmth italic">"{selectedPrompt}"</p>
-	{/if}
 
 	<form method="POST" use:enhance>
-		<input type="hidden" name="prompt" value={selectedPrompt} />
-
 		{#if form?.error}
 			<div class="mb-4 rounded-lg border border-danger/30 bg-danger/10 p-3 text-sm text-danger">
 				{form.error}

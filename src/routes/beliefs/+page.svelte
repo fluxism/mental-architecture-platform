@@ -83,7 +83,7 @@
 						">{belief.status}</span>
 					</div>
 					<time class="mt-3 block text-xs text-text-muted">
-						Added {new Date(belief.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+						Added {new Date(belief.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} at {new Date(belief.createdAt).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
 					</time>
 				</a>
 			{/each}
