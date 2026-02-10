@@ -10,6 +10,8 @@ const MODEL = 'gpt-5.2';
 export type UserProfile = {
 	name: string | null;
 	gender: 'male' | 'female' | null;
+	dateOfBirth: string | null;
+	placeOfBirth: string | null;
 	beliefs: {
 		statement: string;
 		status: string;
@@ -26,6 +28,8 @@ function buildProfileContext(profile: UserProfile): string {
 
 	if (profile.name) lines.push(`Name: ${profile.name}`);
 	if (profile.gender) lines.push(`Gender: ${profile.gender}`);
+	if (profile.dateOfBirth) lines.push(`Date of birth: ${profile.dateOfBirth}`);
+	if (profile.placeOfBirth) lines.push(`Place of birth: ${profile.placeOfBirth}`);
 
 	if (profile.beliefs.length > 0) {
 		lines.push('\n── ALL IDENTIFIED NEGATIVE BELIEFS ──');

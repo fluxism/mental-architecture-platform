@@ -53,6 +53,33 @@
 			</div>
 
 			<div>
+				<label for="dateOfBirth" class="block text-sm font-medium text-text-secondary">
+					Date of birth <span class="text-text-muted">(optional)</span>
+				</label>
+				<input
+					id="dateOfBirth"
+					name="dateOfBirth"
+					type="date"
+					value={form?.dateOfBirth ?? ''}
+					class="mt-1.5 w-full rounded-lg border border-border-subtle bg-surface-raised px-4 py-2.5 text-text-primary placeholder-text-muted outline-none transition-colors focus:border-accent"
+				/>
+			</div>
+
+			<div>
+				<label for="placeOfBirth" class="block text-sm font-medium text-text-secondary">
+					Place of birth <span class="text-text-muted">(optional)</span>
+				</label>
+				<input
+					id="placeOfBirth"
+					name="placeOfBirth"
+					type="text"
+					value={form?.placeOfBirth ?? ''}
+					placeholder="City, Country"
+					class="mt-1.5 w-full rounded-lg border border-border-subtle bg-surface-raised px-4 py-2.5 text-text-primary placeholder-text-muted outline-none transition-colors focus:border-accent"
+				/>
+			</div>
+
+			<div>
 				<label for="email" class="block text-sm font-medium text-text-secondary">
 					Email
 				</label>

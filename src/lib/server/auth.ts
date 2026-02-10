@@ -37,7 +37,7 @@ export async function validateSession(
 	const [result] = await db
 		.select({
 			session: sessions,
-			user: { id: users.id, email: users.email, name: users.name, gender: users.gender }
+			user: { id: users.id, email: users.email, name: users.name, gender: users.gender, dateOfBirth: users.dateOfBirth, placeOfBirth: users.placeOfBirth }
 		})
 		.from(sessions)
 		.innerJoin(users, eq(sessions.userId, users.id))
@@ -139,4 +139,6 @@ export type SessionUser = {
 	email: string;
 	name: string | null;
 	gender: 'male' | 'female' | null;
+	dateOfBirth: string | null;
+	placeOfBirth: string | null;
 };

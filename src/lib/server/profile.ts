@@ -54,6 +54,8 @@ export async function buildUserProfile(userId: string): Promise<UserProfile> {
 	return {
 		name: user?.name || null,
 		gender: (user?.gender as 'male' | 'female' | null) || null,
+		dateOfBirth: user?.dateOfBirth || null,
+		placeOfBirth: user?.placeOfBirth || null,
 		beliefs: beliefsWithOrigins,
 		journalExcerpts: entries.map((e) => e.content),
 		existingStoryTitles: userStories.map((s) => s.title).filter(Boolean) as string[],

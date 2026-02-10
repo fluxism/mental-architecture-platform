@@ -13,23 +13,25 @@ export const actions: Actions = {
 		const password = formData.get('password')?.toString() ?? '';
 		const name = formData.get('name')?.toString().trim() || null;
 		const gender = formData.get('gender')?.toString() as 'male' | 'female' | null;
+		const dateOfBirth = formData.get('dateOfBirth')?.toString().trim() || null;
+		const placeOfBirth = formData.get('placeOfBirth')?.toString().trim() || null;
 
 		// Validate email
 		if (!email) {
-			return fail(400, { email, name, error: 'Email is required.' });
+			return fail(400, { email, name, dateOfBirth, placeOfBirth, error: 'Email is required.' });
 		}
 
 		if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-			return fail(400, { email, name, error: 'Please enter a valid email address.' });
+			return fail(400, { email, name, dateOfBirth, placeOfBirth, error: 'Please enter a valid email address.' });
 		}
 
 		// Validate password
 		if (!password) {
-			return fail(400, { email, name, error: 'Password is required.' });
+			return fail(400, { email, name, dateOfBirth, placeOfBirth, error: 'Password is required.' });
 		}
 
 		if (password.length < 8) {
-			return fail(400, { email, name, error: 'Password must be at least 8 characters.' });
+			return fail(400, { email, name, dateOfBirth, placeOfBirth, error: 'Password must be at least 8 characters.' });
 		}
 
 		// Check if email already exists
@@ -40,7 +42,7 @@ export const actions: Actions = {
 			.limit(1);
 
 		if (existing) {
-			return fail(400, { email, name, error: 'An account with this email already exists.' });
+			return fail(400, { email, name, dateOfBirth, placeOfBirth, error: 'An account with this email already exists.' });
 		}
 
 		// Create user
@@ -54,6 +56,8 @@ export const actions: Actions = {
 			passwordHash,
 			name,
 			gender,
+			dateOfBirth,
+			placeOfBirth,
 			createdAt: now,
 			updatedAt: now
 		});
