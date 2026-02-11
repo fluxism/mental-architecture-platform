@@ -16,14 +16,18 @@ export function openaiStreamToResponse(
 ): ReadableStream<Uint8Array> {
 	const encoder = new TextEncoder();
 	return new ReadableStream({
-		async pull(controller) {
-			for await (const chunk of stream) {
-				const delta = chunk.choices[0]?.delta?.content;
-				if (delta) {
-					controller.enqueue(encoder.encode(delta));
+		async start(controller) {
+			try {
+				for await (const chunk of stream) {
+					const delta = chunk.choices[0]?.delta?.content;
+					if (delta) {
+						controller.enqueue(encoder.encode(delta));
+					}
 				}
+				controller.close();
+			} catch (e) {
+				controller.error(e);
 			}
-			controller.close();
 		}
 	});
 }
