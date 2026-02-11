@@ -1,6 +1,6 @@
-import { json, error } from '@sveltejs/kit';
+import { error } from '@sveltejs/kit';
 import type { RequestHandler } from './$types.js';
-import { generateMythicStory } from '$lib/server/ai.js';
+import { streamMythicStory } from '$lib/server/ai.js';
 import { buildUserProfile } from '$lib/server/profile.js';
 
 export const POST: RequestHandler = async ({ locals }) => {
@@ -8,13 +8,11 @@ export const POST: RequestHandler = async ({ locals }) => {
 
 	try {
 		const profile = await buildUserProfile(locals.user.id);
-		const story = await generateMythicStory(profile);
+		const stream = await streamMythicStory(profile);
 
-		if (!story.content) {
-			throw error(500, 'Story generation returned empty content');
-		}
-
-		return json(story);
+		return new Response(stream, {
+			headers: { 'Content-Type': 'text/plain; charset=utf-8' }
+		});
 	} catch (e: any) {
 		if (e?.status) throw e;
 		console.error('Story generation failed:', e);

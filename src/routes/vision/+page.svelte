@@ -17,9 +17,15 @@
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({})
 			});
-			const result = await res.json();
-			generatedTitle = result.title || '';
-			generatedContent = result.content || '';
+			if (!res.ok) throw new Error('Generation failed');
+			const text = await res.text();
+			try {
+				const result = JSON.parse(text);
+				generatedTitle = result.title || '';
+				generatedContent = result.content || '';
+			} catch {
+				generatedContent = text;
+			}
 		} catch {
 			generatedTitle = '';
 			generatedContent = '';

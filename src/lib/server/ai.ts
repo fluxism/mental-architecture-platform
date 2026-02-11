@@ -1,9 +1,32 @@
 import OpenAI from 'openai';
-import { OPENAI_API_KEY } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 
-const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
+let _openai: OpenAI;
+function getOpenAI() {
+	if (!_openai) _openai = new OpenAI({ apiKey: env.OPENAI_API_KEY });
+	return _openai;
+}
 
 const MODEL = 'gpt-5.2';
+
+// ── Streaming helper: converts an OpenAI stream into a ReadableStream ──
+
+export function openaiStreamToResponse(
+	stream: AsyncIterable<OpenAI.ChatCompletionChunk>
+): ReadableStream<Uint8Array> {
+	const encoder = new TextEncoder();
+	return new ReadableStream({
+		async pull(controller) {
+			for await (const chunk of stream) {
+				const delta = chunk.choices[0]?.delta?.content;
+				if (delta) {
+					controller.enqueue(encoder.encode(delta));
+				}
+			}
+			controller.close();
+		}
+	});
+}
 
 // ── Context builder: gathers ALL user data into a rich profile for the AI ──
 
@@ -74,7 +97,7 @@ function buildProfileContext(profile: UserProfile): string {
 // ── Extract beliefs from journal text ──
 
 export async function extractBeliefsFromText(text: string): Promise<string[]> {
-	const response = await openai.chat.completions.create({
+	const response = await getOpenAI().chat.completions.create({
 		model: MODEL,
 		messages: [
 			{
@@ -115,7 +138,7 @@ export async function generateFunctionalBelief(
 ): Promise<string> {
 	const context = buildProfileContext(profile);
 
-	const response = await openai.chat.completions.create({
+	const response = await getOpenAI().chat.completions.create({
 		model: MODEL,
 		messages: [
 			{
@@ -159,7 +182,7 @@ export async function generateAffirmation(
 ): Promise<string> {
 	const context = buildProfileContext(profile);
 
-	const response = await openai.chat.completions.create({
+	const response = await getOpenAI().chat.completions.create({
 		model: MODEL,
 		messages: [
 			{
@@ -203,7 +226,7 @@ export async function generateMythicStory(
 ): Promise<{ title: string; content: string }> {
 	const context = buildProfileContext(profile);
 
-	const response = await openai.chat.completions.create({
+	const response = await getOpenAI().chat.completions.create({
 		model: MODEL,
 		messages: [
 			{
@@ -253,6 +276,108 @@ Write their parable. Make it personal. Make it beautiful. Make it true.`
 	}
 }
 
+// ── Stream holistic mythic story (avoids gateway timeout on serverless) ──
+
+export async function streamMythicStory(
+	profile: UserProfile
+): Promise<ReadableStream<Uint8Array>> {
+	const context = buildProfileContext(profile);
+
+	const stream = await getOpenAI().chat.completions.create({
+		model: MODEL,
+		messages: [
+			{
+				role: 'system',
+				content: `You are a sacred storyteller. You write in the tradition of the great parables — the kind that were spoken by firesides, written into scrolls, passed from generation to generation because they changed the shape of a person's soul.
+
+Study how the Bible told its stories:
+- The Prodigal Son didn't lecture about forgiveness — it showed a father running
+- David's Psalms didn't explain depression — they cried out from the pit and then remembered who held them
+- Ruth didn't theorize about loyalty — she chose the harder road and found her purpose in it
+- Esther didn't preach about courage — she walked into a throne room knowing she might die
+- Joseph didn't explain suffering — he wept with the brothers who sold him, and fed them
+
+YOUR STORY MUST:
+1. Use ALL the beliefs, origins, journal entries, and emotional data provided — weave them together into ONE unified narrative
+2. Create a character who mirrors this person's specific wounds, not generic struggles
+3. ${profile.gender === 'female' ? 'Feature a female protagonist. Draw on feminine archetypes — the woman at the well who was seen for the first time, the mother who birthed life from barrenness, the warrior who fought with wisdom not weapons, the healer whose broken hands still blessed others' : profile.gender === 'male' ? 'Feature a male protagonist. Draw on masculine archetypes — the shepherd who protected the flock through the valley, the builder who raised what others tore down, the father who learned his own worth so he could teach his sons, the wanderer who found his kingdom was within' : 'Feature a protagonist whose journey speaks to universal human wholeness'}
+4. Show the wound being carried (not just named — FELT)
+5. Show the moment of recognition — when the character realizes the belief was a lie told to them by their pain
+6. Show transformation that feels EARNED, not magical — like Jacob wrestling the angel until daybreak
+7. End with the character stepping into their new identity — not perfectly, but willingly
+8. Use rich, sensory, symbolic language — landscapes that mirror inner states, weather that reflects emotion, encounters that feel destined
+9. Be 500-900 words — long enough to breathe, short enough to memorize
+10. This story will be STUDIED like scripture. It must reward re-reading. Hide layers of meaning.
+
+${profile.existingStoryTitles.length > 0 ? `IMPORTANT: This person already has stories titled: ${profile.existingStoryTitles.join(', ')}. Create something with a DIFFERENT theme, archetype, and setting. Show a new facet of their journey.` : ''}
+
+Return JSON with "title" and "content" fields. The title should feel like a chapter in a sacred book.`
+			},
+			{
+				role: 'user',
+				content: `THE COMPLETE INNER LANDSCAPE OF THIS PERSON:
+${context}
+
+Write their parable. Make it personal. Make it beautiful. Make it true.`
+			}
+		],
+		response_format: { type: 'json_object' },
+		temperature: 0.9,
+		stream: true
+	});
+
+	return openaiStreamToResponse(stream);
+}
+
+// ── Stream life vision (avoids gateway timeout on serverless) ──
+
+export async function streamLifeVision(
+	profile: UserProfile
+): Promise<ReadableStream<Uint8Array>> {
+	const context = buildProfileContext(profile);
+
+	const stream = await getOpenAI().chat.completions.create({
+		model: MODEL,
+		messages: [
+			{
+				role: 'system',
+				content: `You are a prophet of possibility — not in a religious sense, but in the deepest human sense. You see what a person could become when every chain is broken, every lie is silenced, and every wound becomes a source of wisdom.
+
+Your task is to write a FIRST-PERSON vision of this person's transformed life. This is not fantasy — it is faith made visible. It is the detailed, vivid, sensory description of who they are BECOMING.
+
+Like the vision chapters in scripture — Isaiah's peaceable kingdom, Ezekiel's valley of dry bones coming to life, John's revelation of a new earth — this vision must:
+
+1. Be written in FIRST PERSON ("I wake up and..." / "I walk into...")
+2. Use SPECIFIC details from their actual life, beliefs, and wounds — transformed
+3. Show what their mornings feel like when the old beliefs no longer control them
+4. Show how they relate to people when the relational wounds are healed
+5. Show what their purpose looks like when they can finally hear their calling
+6. ${profile.gender === 'female' ? 'Honor her feminine power fully realized — her intuition trusted, her voice valued, her boundaries honored, her love given from fullness not depletion' : profile.gender === 'male' ? 'Honor his masculine power fully realized — his presence steady, his purpose clear, his tenderness not weakness, his leadership born from self-knowledge' : 'Honor the full spectrum of their humanity — strength and tenderness, purpose and rest, giving and receiving'}
+7. Be vivid and sensory — what do they see, hear, feel, taste in this new life
+8. Be 400-700 words
+9. End with something they can carry — a sentence that encapsulates their new identity
+10. Make it so personal that only THIS person could have written it
+
+This is their blueprint. Their north star. The life they are building one belief at a time.
+
+Return JSON with "title" and "content" fields.`
+			},
+			{
+				role: 'user',
+				content: `THE COMPLETE INNER LANDSCAPE OF THIS PERSON:
+${context}
+
+Write their New Life Vision. Make it so real they can feel it. Make it so personal they cry reading it.`
+			}
+		],
+		response_format: { type: 'json_object' },
+		temperature: 0.85,
+		stream: true
+	});
+
+	return openaiStreamToResponse(stream);
+}
+
 // ── Generate New Life Vision / POV ──
 
 export async function generateLifeVision(
@@ -260,7 +385,7 @@ export async function generateLifeVision(
 ): Promise<{ title: string; content: string }> {
 	const context = buildProfileContext(profile);
 
-	const response = await openai.chat.completions.create({
+	const response = await getOpenAI().chat.completions.create({
 		model: MODEL,
 		messages: [
 			{
@@ -318,7 +443,7 @@ export async function assistOriginInquiry(
 		.map((r) => `Q: ${r.question}\nA: ${r.response}`)
 		.join('\n\n');
 
-	const response = await openai.chat.completions.create({
+	const response = await getOpenAI().chat.completions.create({
 		model: MODEL,
 		messages: [
 			{
@@ -364,7 +489,7 @@ export async function generateJournalInsights(
 ): Promise<string> {
 	const context = buildProfileContext(profile);
 
-	const response = await openai.chat.completions.create({
+	const response = await getOpenAI().chat.completions.create({
 		model: MODEL,
 		messages: [
 			{

@@ -22,12 +22,19 @@
 				body: JSON.stringify({})
 			});
 			if (!res.ok) {
-				const err = await res.json().catch(() => null);
-				throw new Error(err?.message || 'Generation failed');
+				const err = await res.text().catch(() => null);
+				let msg = 'Generation failed';
+				if (err) try { msg = JSON.parse(err).message || msg; } catch {}
+				throw new Error(msg);
 			}
-			const result = await res.json();
-			generatedTitle = result.title || '';
-			generatedContent = result.content || '';
+			const text = await res.text();
+			try {
+				const result = JSON.parse(text);
+				generatedTitle = result.title || '';
+				generatedContent = result.content || '';
+			} catch {
+				generatedContent = text;
+			}
 			if (!generatedContent) {
 				errorMessage = 'The story came back empty. Please try again.';
 			}

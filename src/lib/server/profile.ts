@@ -7,49 +7,48 @@ import {
 	stories,
 	affirmations
 } from './db/schema.js';
-import { eq, desc } from 'drizzle-orm';
+import { eq, desc, inArray } from 'drizzle-orm';
 import type { UserProfile } from './ai.js';
 
 export async function buildUserProfile(userId: string): Promise<UserProfile> {
-	const [user] = await db.select().from(users).where(eq(users.id, userId)).limit(1);
+	const [userResult, userBeliefs, entries, userStories, userAffirmations] = await Promise.all([
+		db.select().from(users).where(eq(users.id, userId)).limit(1),
+		db.select().from(beliefs).where(eq(beliefs.userId, userId)).orderBy(desc(beliefs.createdAt)),
+		db
+			.select({ content: journalEntries.content })
+			.from(journalEntries)
+			.where(eq(journalEntries.userId, userId))
+			.orderBy(desc(journalEntries.createdAt))
+			.limit(10),
+		db.select({ title: stories.title }).from(stories).where(eq(stories.userId, userId)),
+		db
+			.select({ content: affirmations.content })
+			.from(affirmations)
+			.where(eq(affirmations.userId, userId))
+	]);
 
-	const userBeliefs = await db
-		.select()
-		.from(beliefs)
-		.where(eq(beliefs.userId, userId))
-		.orderBy(desc(beliefs.createdAt));
+	const user = userResult[0];
+	const beliefIds = userBeliefs.map((b) => b.id);
+	const allOrigins =
+		beliefIds.length > 0
+			? await db.select().from(beliefOrigins).where(inArray(beliefOrigins.beliefId, beliefIds))
+			: [];
 
-	const beliefsWithOrigins = await Promise.all(
-		userBeliefs.map(async (b) => {
-			const origins = await db
-				.select()
-				.from(beliefOrigins)
-				.where(eq(beliefOrigins.beliefId, b.id));
-			return {
-				statement: b.statement,
-				status: b.status,
-				functionalBelief: b.functionalBelief,
-				origins: origins.map((o) => ({ question: o.question, response: o.response }))
-			};
-		})
-	);
+	const originsByBelief = new Map<string, (typeof allOrigins)[number][]>();
+	for (const o of allOrigins) {
+		if (!originsByBelief.has(o.beliefId)) originsByBelief.set(o.beliefId, []);
+		originsByBelief.get(o.beliefId)!.push(o);
+	}
 
-	const entries = await db
-		.select({ content: journalEntries.content })
-		.from(journalEntries)
-		.where(eq(journalEntries.userId, userId))
-		.orderBy(desc(journalEntries.createdAt))
-		.limit(10);
-
-	const userStories = await db
-		.select({ title: stories.title })
-		.from(stories)
-		.where(eq(stories.userId, userId));
-
-	const userAffirmations = await db
-		.select({ content: affirmations.content })
-		.from(affirmations)
-		.where(eq(affirmations.userId, userId));
+	const beliefsWithOrigins = userBeliefs.map((b) => ({
+		statement: b.statement,
+		status: b.status,
+		functionalBelief: b.functionalBelief,
+		origins: (originsByBelief.get(b.id) || []).map((o) => ({
+			question: o.question,
+			response: o.response
+		}))
+	}));
 
 	return {
 		name: user?.name || null,
