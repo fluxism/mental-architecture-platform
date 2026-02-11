@@ -8,9 +8,9 @@ importers:
 
   .:
     dependencies:
-      '@netlify/neon':
-        specifier: ^0.1.2
-        version: 0.1.2
+      '@neondatabase/serverless':
+        specifier: ^1.0.2
+        version: 1.0.2
       '@oslojs/crypto':
         specifier: ^1.0.1
         version: 1.0.1
@@ -540,9 +540,6 @@ packages:
   '@neondatabase/serverless@1.0.2':
     resolution: {integrity: sha512-I5sbpSIAHiB+b6UttofhrN/UJXII+4tZPAq1qugzwCwLIL8EZLV7F/JyHUrEIiGgQpEXzpnjlJ+zwcEhheGvCw==}
     engines: {node: '>=19.0.0'}
-
-  '@netlify/neon@0.1.2':
-    resolution: {integrity: sha512-F8+Dnu+nvGZruskblFwTopv/CUbHi2VOP4bJpDhRo85UFawZ/wMPmxnWQ0CLYwdAERU1OYoQyXOQM19HxAHjQQ==}
 
   '@oslojs/asn1@1.0.0':
     resolution: {integrity: sha512-zw/wn0sj0j0QKbIXfIlnEcTviaCzYOY3V5rAyjR6YtOByFtJiT574+8p9Wlach0lZH9fddD4yb9laEAIl4vXQA==}
@@ -1707,10 +1704,6 @@ snapshots:
     dependencies:
       '@types/node': 22.19.10
       '@types/pg': 8.16.0
-
-  '@netlify/neon@0.1.2':
-    dependencies:
-      '@neondatabase/serverless': 1.0.2
 
   '@oslojs/asn1@1.0.0':
     dependencies:
