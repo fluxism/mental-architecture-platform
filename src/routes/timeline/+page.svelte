@@ -23,7 +23,7 @@
 			<p class="font-serif text-xl text-text-secondary">Your story hasn't begun yet</p>
 			<p class="mt-2 text-text-muted">Start with a journal entry or add a belief to see your timeline grow.</p>
 			<div class="mt-6 flex justify-center gap-3">
-				<a href="/journal/new" class="rounded-lg bg-accent px-6 py-2.5 text-sm font-medium text-white hover:bg-accent-hover">Write an Entry</a>
+				<a href="/journal/new" class="rounded-lg bg-accent px-6 py-2.5 text-sm font-medium text-surface hover:bg-accent-hover">Write an Entry</a>
 				<a href="/beliefs/new" class="rounded-lg border border-border-medium px-6 py-2.5 text-sm text-text-secondary hover:text-text-primary">Add a Belief</a>
 			</div>
 		</div>

@@ -55,7 +55,7 @@
 				<p class="mt-2 text-sm text-danger">{form.error}</p>
 			{/if}
 			<div class="mt-3 flex gap-2">
-				<button type="submit" class="rounded-lg bg-accent px-4 py-2 text-sm text-white hover:bg-accent-hover">Save</button>
+				<button type="submit" class="rounded-lg bg-accent px-4 py-2 text-sm text-surface hover:bg-accent-hover">Save</button>
 				<button type="button" onclick={() => { editing = false; editContent = data.entry.content; }} class="rounded-lg px-4 py-2 text-sm text-text-secondary hover:text-text-primary">Cancel</button>
 			</div>
 		</form>
@@ -161,7 +161,7 @@
 					<p class="mt-1 text-sm text-danger">{form.reflectionError}</p>
 				{/if}
 				<div class="mt-2 flex gap-2">
-					<button type="submit" class="rounded-lg bg-warmth px-4 py-2 text-sm text-white hover:bg-warmth-hover">Add Reflection</button>
+					<button type="submit" class="rounded-lg bg-warmth px-4 py-2 text-sm text-surface hover:bg-warmth-hover">Add Reflection</button>
 					<button type="button" onclick={() => showReflectionForm = false} class="rounded-lg px-4 py-2 text-sm text-text-secondary">Cancel</button>
 				</div>
 			</form>

@@ -108,7 +108,7 @@
 
 			<button
 				onclick={generateStory}
-				class="mt-6 rounded-lg bg-accent px-8 py-3.5 text-sm font-medium text-white shadow-sm transition-all hover:bg-accent-hover hover:shadow-md"
+				class="mt-6 rounded-lg bg-accent px-8 py-3.5 text-sm font-medium text-surface shadow-sm transition-all hover:bg-accent-hover hover:shadow-md"
 			>
 				Generate Sacred Parable
 			</button>
@@ -148,7 +148,7 @@
 				<input type="hidden" name="title" value={generatedTitle} />
 				<input type="hidden" name="content" value={generatedContent} />
 				<div class="mt-6 flex flex-col items-center gap-3 border-t border-border-subtle pt-6 sm:flex-row sm:justify-center">
-					<button type="submit" class="rounded-lg bg-accent px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-accent-hover">
+					<button type="submit" class="rounded-lg bg-accent px-6 py-2.5 text-sm font-medium text-surface transition-colors hover:bg-accent-hover">
 						Save to Your Timeline
 					</button>
 					<button type="button" onclick={generateStory} class="rounded-lg border border-border-medium px-4 py-2.5 text-sm text-text-secondary transition-colors hover:text-text-primary">
@@ -185,7 +185,7 @@
 							class="w-full resize-y rounded-lg border border-border-subtle bg-surface p-4 font-serif leading-relaxed text-text-primary focus:border-accent focus:outline-none"
 						></textarea>
 						<div class="mt-3 flex gap-2">
-							<button type="submit" class="rounded-lg bg-accent px-4 py-2 text-sm text-white">Save</button>
+							<button type="submit" class="rounded-lg bg-accent px-4 py-2 text-sm text-surface">Save</button>
 							<button type="button" onclick={() => editingStoryId = null} class="text-sm text-text-secondary">Cancel</button>
 						</div>
 					</form>

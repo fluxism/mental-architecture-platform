@@ -19,7 +19,7 @@
 		</div>
 		<a
 			href="/beliefs/new"
-			class="rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-accent-hover"
+			class="rounded-lg bg-accent px-4 py-2 text-sm font-medium text-surface transition-colors hover:bg-accent-hover"
 		>
 			Add Belief
 		</a>
@@ -31,7 +31,7 @@
 			<button
 				onclick={() => filter = status as any}
 				class="rounded-full px-3 py-1.5 text-sm transition-colors
-					{filter === status ? 'bg-accent text-white' : 'bg-surface-overlay text-text-secondary hover:text-text-primary'}"
+					{filter === status ? 'bg-accent text-surface' : 'bg-surface-overlay text-text-secondary hover:text-text-primary'}"
 			>
 				{status.charAt(0).toUpperCase() + status.slice(1)}
 				{#if status !== 'all'}
@@ -50,7 +50,7 @@
 				Start by journaling, then extract beliefs — or add them directly.
 			</p>
 			<div class="mt-6 flex justify-center gap-3">
-				<a href="/beliefs/new" class="rounded-lg bg-accent px-6 py-2.5 text-sm font-medium text-white hover:bg-accent-hover">
+				<a href="/beliefs/new" class="rounded-lg bg-accent px-6 py-2.5 text-sm font-medium text-surface hover:bg-accent-hover">
 					Add a Belief
 				</a>
 				<a href="/journal/new" class="rounded-lg border border-border-medium px-6 py-2.5 text-sm text-text-secondary hover:text-text-primary">

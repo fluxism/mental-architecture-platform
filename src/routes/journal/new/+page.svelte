@@ -50,7 +50,7 @@
 				</a>
 				<button
 					type="submit"
-					class="rounded-lg bg-accent px-6 py-2 text-sm font-medium text-white transition-colors hover:bg-accent-hover disabled:opacity-50"
+					class="rounded-lg bg-accent px-6 py-2 text-sm font-medium text-surface transition-colors hover:bg-accent-hover disabled:opacity-50"
 					disabled={content.trim().length === 0}
 				>
 					Save Entry

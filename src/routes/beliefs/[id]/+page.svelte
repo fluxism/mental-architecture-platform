@@ -28,7 +28,7 @@
 					class="w-full resize-y rounded-lg border border-border-subtle bg-surface p-3 font-serif text-xl text-text-primary focus:border-accent focus:outline-none"
 				></textarea>
 				<div class="mt-2 flex gap-2">
-					<button type="submit" class="rounded-lg bg-accent px-3 py-1.5 text-sm text-white">Save</button>
+					<button type="submit" class="rounded-lg bg-accent px-3 py-1.5 text-sm text-surface">Save</button>
 					<button type="button" onclick={() => { editingStatement = false; statementText = data.belief.statement; }} class="text-sm text-text-secondary">Cancel</button>
 				</div>
 			</form>
@@ -161,7 +161,7 @@
 					class="w-full rounded-xl border border-border-subtle bg-surface-raised p-4 text-sm text-text-primary placeholder-text-muted focus:border-accent focus:outline-none"
 				></textarea>
 				<div class="mt-2 flex gap-2">
-					<button type="submit" class="rounded-lg bg-warmth px-4 py-2 text-sm text-white hover:bg-warmth-hover">Add Reflection</button>
+					<button type="submit" class="rounded-lg bg-warmth px-4 py-2 text-sm text-surface hover:bg-warmth-hover">Add Reflection</button>
 					<button type="button" onclick={() => showReflectionForm = false} class="text-sm text-text-secondary">Cancel</button>
 				</div>
 			</form>

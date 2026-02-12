@@ -116,7 +116,7 @@
 			<button
 				type="submit"
 				disabled={!functionalBelief.trim()}
-				class="mt-3 rounded-lg bg-accent px-4 py-2 text-sm text-white transition-colors hover:bg-accent-hover disabled:opacity-50"
+				class="mt-3 rounded-lg bg-accent px-4 py-2 text-sm text-surface transition-colors hover:bg-accent-hover disabled:opacity-50"
 			>
 				Save New Belief
 			</button>
@@ -155,7 +155,7 @@
 			<button
 				onclick={generateAffirmation}
 				disabled={generatingAffirmation}
-				class="mb-4 rounded-lg bg-accent px-4 py-2 text-sm text-white transition-colors hover:bg-accent-hover disabled:opacity-50"
+				class="mb-4 rounded-lg bg-accent px-4 py-2 text-sm text-surface transition-colors hover:bg-accent-hover disabled:opacity-50"
 			>
 				{#if generatingAffirmation}
 					<span class="inline-flex items-center gap-2">
@@ -185,7 +185,7 @@
 				<button
 					type="submit"
 					disabled={!newAffirmation.trim()}
-					class="mt-3 rounded-lg bg-warmth px-4 py-2 text-sm text-white transition-colors hover:bg-warmth-hover disabled:opacity-50"
+					class="mt-3 rounded-lg bg-warmth px-4 py-2 text-sm text-surface transition-colors hover:bg-warmth-hover disabled:opacity-50"
 				>
 					Save Affirmation
 				</button>
@@ -198,7 +198,7 @@
 		<p class="text-sm text-text-secondary">Your transformation is taking shape.</p>
 		<a
 			href="/beliefs/{data.belief.id}/story"
-			class="mt-3 inline-block rounded-lg bg-accent px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-accent-hover"
+			class="mt-3 inline-block rounded-lg bg-accent px-6 py-3 text-sm font-medium text-surface transition-colors hover:bg-accent-hover"
 		>
 			Continue to Your Sacred Parable &rarr;
 		</a>

@@ -52,7 +52,7 @@
 			<button
 				type="submit"
 				disabled={statement.trim().length === 0}
-				class="rounded-lg bg-accent px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-accent-hover disabled:opacity-50"
+				class="rounded-lg bg-accent px-6 py-2.5 text-sm font-medium text-surface transition-colors hover:bg-accent-hover disabled:opacity-50"
 			>
 				Add Belief
 			</button>

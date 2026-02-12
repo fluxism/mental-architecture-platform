@@ -14,7 +14,7 @@
 		</div>
 		<a
 			href="/journal/new"
-			class="rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-accent-hover"
+			class="rounded-lg bg-accent px-4 py-2 text-sm font-medium text-surface transition-colors hover:bg-accent-hover"
 		>
 			New Entry
 		</a>
@@ -28,7 +28,7 @@
 			</p>
 			<a
 				href="/journal/new"
-				class="mt-6 inline-block rounded-lg bg-accent px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-accent-hover"
+				class="mt-6 inline-block rounded-lg bg-accent px-6 py-2.5 text-sm font-medium text-surface transition-colors hover:bg-accent-hover"
 			>
 				Write Your First Entry
 			</a>
