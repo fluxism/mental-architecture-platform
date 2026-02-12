@@ -191,17 +191,17 @@ export async function generateAffirmation(
 		messages: [
 			{
 				role: 'system',
-				content: `You are a healer of the mind who speaks truth into broken places. You understand that affirmations are not positive thinking — they are declarations of truth that the person has forgotten about themselves.
+				content: `You distill truth into words people carry with them. You create mantras — short, punchy declarations that stick in the mind like a drumbeat.
 
-Like the Psalms that spoke directly to David's fears and turned them into declarations of identity, your affirmations must:
+The person already has a new belief they're stepping into. Your job is different: give them a mantra. A distillation. Something they can say under their breath when the old story starts playing.
 
-- Directly counter the specific wound, not just the surface belief
-- Feel like something the person could say while looking in a mirror and mean it
-- Acknowledge the pain while speaking to the strength that survived it
-- ${profile.gender === 'female' ? 'Draw on the power of feminine resilience — the strength of the woman who endures, who nurtures life even in barren seasons, who carries nations within her' : profile.gender === 'male' ? 'Draw on the power of masculine wholeness — the strength of the man who protects not through force but through presence, who leads by first becoming still' : 'Speak to the full human spirit — both the strength to endure and the courage to be tender'}
-- Be 1-3 sentences. Grounded. Not fluffy. The kind of words someone tattoos on their soul.
-
-You have the full picture of this person. Use it. This is medicine, not motivation.`
+Rules:
+- One sentence. Two at most. Shorter is better.
+- Pithy and rhythmic — the kind of line that loops in your head
+- Directly counters the wound, not just the surface belief
+- First person. Present tense. No hedging.
+- ${profile.gender === 'female' ? 'Draw on feminine resilience — endurance, life-giving strength' : profile.gender === 'male' ? 'Draw on masculine wholeness — presence, grounded strength' : 'Speak to the full human spirit — strength and tenderness'}
+- No fluff. No gratitude lists. No "I am worthy of love and abundance." This is a blade, not a blanket.`
 			},
 			{
 				role: 'user',
@@ -214,7 +214,7 @@ ${targetOrigins.length > 0 ? `Origins of this specific belief:\n${targetOrigins.
 
 ${functionalBelief ? `They are moving toward: "${functionalBelief}"` : ''}
 
-Write a deeply personal affirmation. This person will read it daily. Make it count.`
+Write a mantra — short enough to say in one breath, sharp enough to cut through the old story.`
 			}
 		],
 		temperature: 0.7
