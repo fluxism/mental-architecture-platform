@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import PatternText from '$lib/components/PatternText.svelte';
 
 	let { data, form } = $props();
 	let response = $state('');
@@ -109,7 +110,7 @@
 			{#if aiReflection}
 				<div class="rounded-xl border border-accent/20 bg-accent/5 p-5">
 					<p class="mb-1 text-xs font-medium text-accent">AI Reflection</p>
-					<p class="text-text-secondary italic">{aiReflection}</p>
+					<PatternText text={aiReflection} class="text-text-secondary italic" />
 				</div>
 			{/if}
 			<button
