@@ -1,0 +1,1 @@
+ALTER TABLE "beliefs" ADD COLUMN "ai_reflection" text;

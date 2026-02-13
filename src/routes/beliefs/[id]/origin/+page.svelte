@@ -4,7 +4,7 @@
 
 	let { data, form } = $props();
 	let response = $state('');
-	let aiReflection = $state('');
+	let aiReflection = $state((data.belief.aiReflection || '') as string);
 	let loadingReflection = $state(false);
 
 	async function getAiReflection() {
@@ -15,6 +15,7 @@
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({
 					belief: data.belief.statement,
+					beliefId: data.belief.id,
 					existingResponses: data.origins.map((o: any) => ({ question: o.question, response: o.response }))
 				})
 			});

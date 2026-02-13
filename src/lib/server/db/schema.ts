@@ -54,6 +54,7 @@ export const beliefs = pgTable('beliefs', {
 		.notNull()
 		.default('active'),
 	functionalBelief: text('functional_belief'),
+	aiReflection: text('ai_reflection'),
 	createdAt: timestamp('created_at').notNull(),
 	updatedAt: timestamp('updated_at').notNull()
 });
