@@ -8,6 +8,13 @@
       "when": 1770946240080,
       "tag": "0000_flowery_toxin",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1770948413895,
+      "tag": "0001_rich_loa",
+      "breakpoints": true
     }
   ]
 }

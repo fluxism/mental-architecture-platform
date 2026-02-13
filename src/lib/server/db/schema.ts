@@ -110,6 +110,18 @@ export const reflections = pgTable('reflections', {
 	createdAt: timestamp('created_at').notNull()
 });
 
+export const aiFeedback = pgTable('ai_feedback', {
+	id: text('id').primaryKey(),
+	userId: text('user_id')
+		.notNull()
+		.references(() => users.id, { onDelete: 'cascade' }),
+	sourceType: text('source_type').notNull(), // 'journal_insight' | 'origin_reflection'
+	sourceId: text('source_id').notNull(), // journal entry or belief id
+	aiOutput: text('ai_output').notNull(),
+	feedback: text('feedback').notNull(),
+	createdAt: timestamp('created_at').notNull()
+});
+
 export const journalEntryBeliefs = pgTable(
 	'journal_entry_beliefs',
 	{

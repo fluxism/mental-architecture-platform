@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import PatternText from '$lib/components/PatternText.svelte';
+	import AiFeedback from '$lib/components/AiFeedback.svelte';
 
 	let { data, form } = $props();
 	let editing = $state(false);
@@ -78,6 +79,9 @@
 		{#if data.entry.aiInsights}
 			<div class="rounded-xl border border-accent/20 bg-accent/5 p-5">
 				<PatternText text={data.entry.aiInsights} class="text-text-secondary italic" />
+				<div class="mt-3 border-t border-accent/10 pt-3">
+					<AiFeedback sourceType="journal_insight" sourceId={data.entry.id} aiOutput={data.entry.aiInsights} />
+				</div>
 			</div>
 		{/if}
 		<form method="POST" action="?/generateInsights" use:enhance class="mt-3">

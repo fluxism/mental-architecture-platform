@@ -48,6 +48,7 @@ export type UserProfile = {
 	journalExcerpts: string[];
 	existingStoryTitles: string[];
 	affirmations: string[];
+	feedbackCorrections: { aiSaid: string; userCorrection: string }[];
 };
 
 function buildProfileContext(profile: UserProfile): string {
@@ -92,6 +93,15 @@ function buildProfileContext(profile: UserProfile): string {
 		lines.push('\n── PREVIOUS STORIES (avoid repeating themes) ──');
 		for (const t of profile.existingStoryTitles) {
 			lines.push(`• ${t}`);
+		}
+	}
+
+	if (profile.feedbackCorrections.length > 0) {
+		lines.push('\n── USER CORRECTIONS TO PAST AI ANALYSIS (learn from these) ──');
+		for (const f of profile.feedbackCorrections) {
+			lines.push(`You said: "${f.aiSaid}"`);
+			lines.push(`They corrected: "${f.userCorrection}"`);
+			lines.push('---');
 		}
 	}
 

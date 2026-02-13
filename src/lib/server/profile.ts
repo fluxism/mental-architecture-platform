@@ -5,27 +5,39 @@ import {
 	beliefOrigins,
 	journalEntries,
 	stories,
-	affirmations
+	affirmations,
+	aiFeedback
 } from './db/schema.js';
 import { eq, desc, inArray } from 'drizzle-orm';
 import type { UserProfile } from './ai.js';
 
 export async function buildUserProfile(userId: string): Promise<UserProfile> {
-	const [userResult, userBeliefs, entries, userStories, userAffirmations] = await Promise.all([
-		db.select().from(users).where(eq(users.id, userId)).limit(1),
-		db.select().from(beliefs).where(eq(beliefs.userId, userId)).orderBy(desc(beliefs.createdAt)),
-		db
-			.select({ content: journalEntries.content })
-			.from(journalEntries)
-			.where(eq(journalEntries.userId, userId))
-			.orderBy(desc(journalEntries.createdAt))
-			.limit(10),
-		db.select({ title: stories.title }).from(stories).where(eq(stories.userId, userId)),
-		db
-			.select({ content: affirmations.content })
-			.from(affirmations)
-			.where(eq(affirmations.userId, userId))
-	]);
+	const [userResult, userBeliefs, entries, userStories, userAffirmations, userFeedback] =
+		await Promise.all([
+			db.select().from(users).where(eq(users.id, userId)).limit(1),
+			db
+				.select()
+				.from(beliefs)
+				.where(eq(beliefs.userId, userId))
+				.orderBy(desc(beliefs.createdAt)),
+			db
+				.select({ content: journalEntries.content })
+				.from(journalEntries)
+				.where(eq(journalEntries.userId, userId))
+				.orderBy(desc(journalEntries.createdAt))
+				.limit(10),
+			db.select({ title: stories.title }).from(stories).where(eq(stories.userId, userId)),
+			db
+				.select({ content: affirmations.content })
+				.from(affirmations)
+				.where(eq(affirmations.userId, userId)),
+			db
+				.select({ aiOutput: aiFeedback.aiOutput, feedback: aiFeedback.feedback })
+				.from(aiFeedback)
+				.where(eq(aiFeedback.userId, userId))
+				.orderBy(desc(aiFeedback.createdAt))
+				.limit(10)
+		]);
 
 	const user = userResult[0];
 	const beliefIds = userBeliefs.map((b) => b.id);
@@ -58,6 +70,10 @@ export async function buildUserProfile(userId: string): Promise<UserProfile> {
 		beliefs: beliefsWithOrigins,
 		journalExcerpts: entries.map((e) => e.content),
 		existingStoryTitles: userStories.map((s) => s.title).filter(Boolean) as string[],
-		affirmations: userAffirmations.map((a) => a.content)
+		affirmations: userAffirmations.map((a) => a.content),
+		feedbackCorrections: userFeedback.map((f) => ({
+			aiSaid: f.aiOutput,
+			userCorrection: f.feedback
+		}))
 	};
 }
