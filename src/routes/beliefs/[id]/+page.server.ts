@@ -113,6 +113,23 @@ export const actions: Actions = {
 		throw redirect(302, '/beliefs');
 	},
 
+	updateReflection: async ({ request, locals }) => {
+		if (!locals.user) throw redirect(302, '/auth/login');
+
+		const formData = await request.formData();
+		const reflectionId = formData.get('reflectionId') as string;
+		const content = formData.get('content') as string;
+
+		if (!content?.trim()) return fail(400, { reflectionError: 'Reflection cannot be empty.' });
+
+		await db
+			.update(reflections)
+			.set({ content: content.trim() })
+			.where(and(eq(reflections.id, reflectionId), eq(reflections.userId, locals.user.id)));
+
+		return { reflectionUpdated: true };
+	},
+
 	addReflection: async ({ request, locals, params }) => {
 		if (!locals.user) throw redirect(302, '/auth/login');
 

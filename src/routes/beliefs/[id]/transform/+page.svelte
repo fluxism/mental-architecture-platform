@@ -7,6 +7,8 @@
 	let generatingBelief = $state(false);
 	let generatingAffirmation = $state(false);
 	let errorMessage = $state('');
+	let editingAffirmationId = $state<string | null>(null);
+	let editAffirmationText = $state('');
 
 	async function generateBelief() {
 		generatingBelief = true;
@@ -134,17 +136,36 @@
 			<div class="mb-6 space-y-3">
 				{#each data.affirmations as affirmation}
 					<div class="rounded-xl border border-accent/20 bg-accent/5 p-5">
-						<p class="font-serif text-lg text-text-primary italic">{affirmation.content}</p>
-						<div class="mt-3 flex items-center justify-between">
-							<span class="text-xs text-text-muted">
-								{affirmation.isAiGenerated ? 'AI-generated' : 'Written by you'} &middot;
-								{new Date(affirmation.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-							</span>
-							<form method="POST" action="?/deleteAffirmation" use:enhance>
+						{#if editingAffirmationId === affirmation.id}
+							<form method="POST" action="?/updateAffirmation" use:enhance={() => { return async ({ update }) => { editingAffirmationId = null; await update(); }; }}>
 								<input type="hidden" name="affirmationId" value={affirmation.id} />
-								<button type="submit" class="text-xs text-text-muted hover:text-danger">Remove</button>
+								<textarea
+									name="content"
+									bind:value={editAffirmationText}
+									rows="2"
+									class="w-full resize-y rounded-lg border border-border-subtle bg-surface p-3 font-serif text-lg text-text-primary focus:border-accent focus:outline-none"
+								></textarea>
+								<div class="mt-2 flex gap-2">
+									<button type="submit" class="rounded-lg bg-accent px-3 py-1.5 text-xs text-surface hover:bg-accent-hover">Save</button>
+									<button type="button" onclick={() => editingAffirmationId = null} class="text-xs text-text-secondary">Cancel</button>
+								</div>
 							</form>
-						</div>
+						{:else}
+							<p class="font-serif text-lg text-text-primary italic">{affirmation.content}</p>
+							<div class="mt-3 flex items-center justify-between">
+								<span class="text-xs text-text-muted">
+									{affirmation.isAiGenerated ? 'AI-generated' : 'Written by you'} &middot;
+									{new Date(affirmation.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+								</span>
+								<div class="flex gap-3">
+									<button onclick={() => { editingAffirmationId = affirmation.id; editAffirmationText = affirmation.content; }} class="text-xs text-text-muted hover:text-text-primary">Edit</button>
+									<form method="POST" action="?/deleteAffirmation" use:enhance>
+										<input type="hidden" name="affirmationId" value={affirmation.id} />
+										<button type="submit" class="text-xs text-text-muted hover:text-danger">Remove</button>
+									</form>
+								</div>
+							</div>
+						{/if}
 					</div>
 				{/each}
 			</div>

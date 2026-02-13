@@ -7,6 +7,8 @@
 	let response = $state('');
 	let aiReflection = $state((data.belief.aiReflection || '') as string);
 	let loadingReflection = $state(false);
+	let editingOriginId = $state<string | null>(null);
+	let editOriginText = $state('');
 
 	async function getAiReflection() {
 		loadingReflection = true;
@@ -93,15 +95,38 @@
 					{#if origin.question !== 'Open reflection'}
 						<p class="mb-1 text-xs text-warmth">{origin.question}</p>
 					{/if}
-					<p class="text-text-primary">{origin.response}</p>
+					{#if editingOriginId === origin.id}
+						<form method="POST" action="?/updateOrigin" use:enhance={() => { return async ({ update }) => { editingOriginId = null; await update(); }; }}>
+							<input type="hidden" name="originId" value={origin.id} />
+							<textarea
+								name="response"
+								bind:value={editOriginText}
+								rows="4"
+								class="w-full resize-y rounded-lg border border-border-subtle bg-surface p-3 text-text-primary focus:border-accent focus:outline-none"
+							></textarea>
+							<div class="mt-2 flex gap-2">
+								<button type="submit" class="rounded-lg bg-accent px-3 py-1.5 text-xs text-surface hover:bg-accent-hover">Save</button>
+								<button type="button" onclick={() => editingOriginId = null} class="text-xs text-text-secondary">Cancel</button>
+							</div>
+						</form>
+					{:else}
+						<button onclick={() => { editingOriginId = origin.id; editOriginText = origin.response; }} class="text-left">
+							<p class="text-text-primary">{origin.response}</p>
+						</button>
+					{/if}
 					<div class="mt-3 flex items-center justify-between">
 						<time class="text-xs text-text-muted">
 							{new Date(origin.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })}
 						</time>
-						<form method="POST" action="?/deleteOrigin" use:enhance>
-							<input type="hidden" name="originId" value={origin.id} />
-							<button type="submit" class="text-xs text-text-muted hover:text-danger">Remove</button>
-						</form>
+						<div class="flex gap-3">
+							{#if editingOriginId !== origin.id}
+								<button onclick={() => { editingOriginId = origin.id; editOriginText = origin.response; }} class="text-xs text-text-muted hover:text-text-primary">Edit</button>
+							{/if}
+							<form method="POST" action="?/deleteOrigin" use:enhance>
+								<input type="hidden" name="originId" value={origin.id} />
+								<button type="submit" class="text-xs text-text-muted hover:text-danger">Remove</button>
+							</form>
+						</div>
 					</div>
 				</div>
 			{/each}

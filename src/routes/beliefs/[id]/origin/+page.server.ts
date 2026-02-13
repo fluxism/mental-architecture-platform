@@ -47,7 +47,24 @@ export const actions: Actions = {
 		return { answered: true };
 	},
 
-	deleteOrigin: async ({ request, locals, params }) => {
+	updateOrigin: async ({ request, locals }) => {
+		if (!locals.user) throw redirect(302, '/auth/login');
+
+		const formData = await request.formData();
+		const originId = formData.get('originId') as string;
+		const response = formData.get('response') as string;
+
+		if (!response?.trim()) return fail(400, { error: 'Response cannot be empty.' });
+
+		await db
+			.update(beliefOrigins)
+			.set({ response: response.trim() })
+			.where(eq(beliefOrigins.id, originId));
+
+		return { updated: true };
+	},
+
+	deleteOrigin: async ({ request, locals }) => {
 		if (!locals.user) throw redirect(302, '/auth/login');
 
 		const formData = await request.formData();

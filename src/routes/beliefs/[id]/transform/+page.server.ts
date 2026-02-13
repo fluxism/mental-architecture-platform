@@ -69,6 +69,23 @@ export const actions: Actions = {
 		return { affirmationAdded: true };
 	},
 
+	updateAffirmation: async ({ request, locals }) => {
+		if (!locals.user) throw redirect(302, '/auth/login');
+
+		const formData = await request.formData();
+		const affirmationId = formData.get('affirmationId') as string;
+		const content = formData.get('content') as string;
+
+		if (!content?.trim()) return fail(400, { affirmationError: 'Affirmation cannot be empty.' });
+
+		await db
+			.update(affirmations)
+			.set({ content: content.trim(), updatedAt: new Date() })
+			.where(and(eq(affirmations.id, affirmationId), eq(affirmations.userId, locals.user.id)));
+
+		return { affirmationUpdated: true };
+	},
+
 	deleteAffirmation: async ({ request, locals }) => {
 		if (!locals.user) throw redirect(302, '/auth/login');
 

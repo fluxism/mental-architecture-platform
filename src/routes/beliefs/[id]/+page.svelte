@@ -6,6 +6,8 @@
 	let statementText = $state(data.belief.statement as string);
 	let showReflectionForm = $state(false);
 	let reflectionText = $state('');
+	let editingReflectionId = $state<string | null>(null);
+	let editReflectionText = $state('');
 </script>
 
 <svelte:head>
@@ -142,10 +144,29 @@
 			<div class="mb-4 space-y-3">
 				{#each data.reflections as reflection}
 					<div class="rounded-lg border-l-2 border-warmth/50 bg-surface-overlay p-4">
-						<p class="text-sm text-text-primary">{reflection.content}</p>
-						<time class="mt-2 block text-xs text-text-muted">
-							{new Date(reflection.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} at {new Date(reflection.createdAt).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
-						</time>
+						{#if editingReflectionId === reflection.id}
+							<form method="POST" action="?/updateReflection" use:enhance={() => { return async ({ update }) => { editingReflectionId = null; await update(); }; }}>
+								<input type="hidden" name="reflectionId" value={reflection.id} />
+								<textarea
+									name="content"
+									bind:value={editReflectionText}
+									rows="3"
+									class="w-full resize-y rounded-lg border border-border-subtle bg-surface p-3 text-sm text-text-primary focus:border-accent focus:outline-none"
+								></textarea>
+								<div class="mt-2 flex gap-2">
+									<button type="submit" class="rounded-lg bg-accent px-3 py-1.5 text-xs text-surface hover:bg-accent-hover">Save</button>
+									<button type="button" onclick={() => editingReflectionId = null} class="text-xs text-text-secondary">Cancel</button>
+								</div>
+							</form>
+						{:else}
+							<p class="text-sm text-text-primary">{reflection.content}</p>
+							<div class="mt-2 flex items-center justify-between">
+								<time class="text-xs text-text-muted">
+									{new Date(reflection.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} at {new Date(reflection.createdAt).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
+								</time>
+								<button onclick={() => { editingReflectionId = reflection.id; editReflectionText = reflection.content; }} class="text-xs text-text-muted hover:text-text-primary">Edit</button>
+							</div>
+						{/if}
 					</div>
 				{/each}
 			</div>
