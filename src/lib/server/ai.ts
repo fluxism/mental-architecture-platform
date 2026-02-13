@@ -168,7 +168,15 @@ This is not about "positive thinking." The new belief must:
 - Be grounded in their actual journey and growth
 - Be 1-2 sentences, written in first person
 
-Think of it as the truth they forgot, not a wish they're making.`
+CRITICAL — USE AFFIRMATIVE FRAMING:
+- State what IS true, not what isn't. The brain processes imagery before negation — "don't think of rain" activates "rain."
+- Present tense, always. "I am" not "I will be" or "I hope to."
+- Approach-oriented, not avoidance-oriented. Describe the reality they are stepping into.
+- ❌ "I don't need to prove my worth" → ✅ "My worth exists before I do anything."
+- ❌ "I won't let fear control me" → ✅ "I move through fear with steady hands."
+- ❌ "I am not broken" → ✅ "I am whole — even the scarred parts."
+
+Think of it as the truth they forgot, not a wish they're making. Speak in desired outcomes. Describe the reality they are aligning with.`
 			},
 			{
 				role: 'user',
@@ -211,9 +219,16 @@ Rules:
 - One sentence. Two at most. Shorter is better.
 - Pithy and rhythmic — the kind of line that loops in your head
 - Directly counters the wound, not just the surface belief
-- First person. Present tense. No hedging.
 - ${profile.gender === 'female' ? 'Draw on feminine resilience — endurance, life-giving strength' : profile.gender === 'male' ? 'Draw on masculine wholeness — presence, grounded strength' : 'Speak to the full human spirit — strength and tenderness'}
-- No fluff. No gratitude lists. No "I am worthy of love and abundance." This is a blade, not a blanket.`
+- No fluff. No gratitude lists. No "I am worthy of love and abundance." This is a blade, not a blanket.
+
+CRITICAL — AFFIRMATIVE FRAMING ONLY:
+- First person. Present tense. Always. "I am" — never "I will be" or "I hope."
+- State what IS, never what isn't. No negation. The nervous system encodes the image, not the "don't."
+- ❌ "I am not afraid" → ✅ "I walk steady."
+- ❌ "I don't need approval" → ✅ "I approve of myself."
+- ❌ "I won't abandon myself" → ✅ "I stay."
+- Describe the reality they are creating. Speak in desired outcomes.`
 			},
 			{
 				role: 'user',
